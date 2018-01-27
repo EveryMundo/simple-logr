@@ -6,7 +6,7 @@
 const
   {sandbox}    = require('sinon'),
   {expect}     = require('chai'),
-  cleanrequire = require('./cleanrequire');
+  cleanrequire = require('@everymundo/cleanrequire');
 
 describe('index.js', () => {
   const konsole = cleanrequire('../lib/konsole');

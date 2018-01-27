@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/EveryMundo/simple-logr#readme",
   "devDependencies": {
+    "@everymundo/cleanrequire": "^1.0.0",
     "chai": "^4.1.2",
     "eslint": "^4.16.0",
     "eslint-config-airbnb-base": "^12.1.0",
