@@ -6,12 +6,14 @@
   "scripts": {
     "cover": "LOG_LEVEL=trace istanbul cover -x '*.test.js' _mocha",
     "check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
+    "check-lint": "eslint *.js lib/*.js test/*.js",
+    "fix-lint": "eslint --fix *.js lib/*.js test/*.js",
     "test": "LOG_LEVEL=trace mocha $@",
     "test-watch": "LOG_LEVEL=trace mocha -w"
   },
   "config": {
     "ghooks": {
-      "pre-push": "npm run cover && npm run check-coverage"
+      "pre-push": "npm run check-lint && npm run cover && npm run check-coverage"
     }
   },
   "repository": {

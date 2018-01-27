@@ -1,7 +1,7 @@
 'use strict';
 
 /* eslint-env mocha */
-/* eslint-disable no-unused-expressions,no-konsole */
+/* eslint-disable no-unused-expressions */
 
 const
   {sandbox}    = require('sinon'),
@@ -83,7 +83,6 @@ describe('index.js', () => {
       });
 
       it('should call konsole.log with first param as TRACE:', (done) => {
-
         box.stub(konsole, 'log').callsFake((...args) => {
           ['TRACE:', undefined, 'test trace', 1, 2, 3]
             .forEach((param, i) => {
@@ -155,7 +154,6 @@ describe('index.js', () => {
 
       it('should NOT CALL konsole.log when process.env.LOG_LEVEL != debug', (done) => {
         box.stub(konsole, 'log').callsFake(() => {
-          console.log({ LOG_LEVEL: logr.LOG_LEVEL });
           done(new Error('IT SHOULD NOT HAVE CALLED konsole.log on logr.debug!!'));
           konsole.log.resotre();
         });
