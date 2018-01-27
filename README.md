@@ -15,7 +15,7 @@ The environmental variable **LOG_LEVEL** can be used to change the log level for
 
 Assuming you run the (simple-usage.js)[ls examples/simple-usage/simple-usage.js] script with the environmental variable LOG_LEVEL=trace, you can see the expected result.
 
-```node
+```js
 const logr = require('@everymundo/simple-logr');
 
 logr.trace('message'); // outputs: YYYY-MM-DDTHH:mm:ss.zzz TRACE: filename:lineNumber message
@@ -29,7 +29,7 @@ logr.fatal('message'); // outputs: YYYY-MM-DDTHH:mm:ss.zzz FATAL: message
 
 If you clone this repo you can run the above examples with the help of npm scripts. Here are the steps:
 
-```bash
+```sh
 git clone https://github.com/EveryMundo/simple-logr.git
 cd simple-logr/examples/simple-usage
 npm install
