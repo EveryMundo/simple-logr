@@ -1,0 +1,20 @@
+{
+  "name": "simple-usage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "simple-usage.js",
+  "scripts": {
+    "trace": "LOG_LEVEL=trace node simple-usage",
+    "debug": "LOG_LEVEL=debug node simple-usage",
+    "info": "LOG_LEVEL=info node simple-usage",
+    "warn": "LOG_LEVEL=warn node simple-usage",
+    "error": "LOG_LEVEL=error node simple-usage",
+    "fatal": "LOG_LEVEL=fatal node simple-usage",
+    "test": "node simple-usage"
+  },
+  "author": "Daniel Santana",
+  "dependencies": {
+    "@everymundo/simple-logr": "~1.0.0"
+  },
+  "license": "MIT"
+}
