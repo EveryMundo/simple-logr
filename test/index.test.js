@@ -232,14 +232,14 @@ describe('index.js', () => {
     it('should call konsole.error with first param as ERROR:', (done) => {
       box.stub(konsole, 'error').callsFake((...args) => {
         expect(args).to.be.instanceof(Array);
-        ['ERROR:', 'test fatal', 1, 2, 3].forEach((param, i) => {
+        ['FATAL:', 'test fatal', 1, 2, 3].forEach((param, i) => {
           expect(args[i + 1]).to.equal(param);
         });
         done();
       });
 
       const logr = cleanrequire('../index.js');
-      logr.fatal('test error', 1, 2, 3);
+      logr.fatal('test fatal', 1, 2, 3);
     });
   });
 });
