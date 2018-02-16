@@ -4,6 +4,7 @@
 /* eslint-disable no-unused-expressions */
 
 const
+  sinon        = require('sinon'),
   {sandbox}    = require('sinon'),
   {expect}     = require('chai'),
   cleanrequire = require('@everymundo/cleanrequire');
@@ -26,6 +27,40 @@ describe('index.js', () => {
     it('should deep equal { trace: 1, debug: 2, info: 3, warn: 4, error: 5, fatal: 6 }', () => {
       const { levels } = getCleanIndex();
       expect(levels).to.deep.equal({ trace: 1, debug: 2, info: 3, warn: 4, error: 5, fatal: 6 });
+    });
+  });
+
+  describe('jsonDate', () => {
+    const LOG_PID = 'LOG_PID';
+    const jsonDateRegExp    = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{1,3}\w{1,3}$/;
+    const jsonDatePIDRegExp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{1,3}\w{1,3}\s[\s\d]{5}$/;
+
+    beforeEach(() => {
+      if (!(LOG_PID in process.env)) process.env[LOG_PID] = '';
+    });
+
+    context('When process.env.LOG_PID is present', () => {
+      beforeEach(() => {
+        if (!(LOG_PID in process.env)) process.env[LOG_PID] = '';
+
+        box.stub(process.env, LOG_PID).value(1);
+      });
+
+      it('should return the date and the formated pid', () => {
+        const { jsonDate } = getCleanIndex();
+        const res = jsonDate();
+
+        expect(res).to.match(jsonDatePIDRegExp);
+      });
+    });
+
+    context('When process.env.LOG_PID is NOT present', () => {
+      it('should return the date and the formated pid', () => {
+        const { jsonDate } = getCleanIndex();
+        const res = jsonDate();
+
+        expect(res).to.match(jsonDateRegExp);
+      });
     });
   });
 
@@ -67,6 +102,22 @@ describe('index.js', () => {
       it('should equal 3 (info)', () => expect(getLogLevel()).to.equal(3));
     });
   });
+
+
+  describe('#RAW', () => {
+    const proxess = require('../lib/proxess');
+    beforeEach(() => {
+      box.stub(proxess, 'stdout').value({ write: sinon.spy() });
+    });
+
+    it('should print a single string passed', () => {
+      const logr = cleanrequire('../index.js');
+      logr.raw('lala');
+
+      expect(proxess.stdout.write).to.have.property('calledOnce', true);
+    });
+  });
+
 
   describe('#TRACE', () => {
     context('When LOG_LEVEL=trace', () => {
