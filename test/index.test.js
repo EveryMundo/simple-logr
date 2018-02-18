@@ -119,6 +119,30 @@ describe('index.js', () => {
   });
 
 
+  describe('getPrefix', () => {
+    const { getPrefix } = cleanrequire('../index.js');
+
+    context('When a prefix is passed', () => {
+      it('should return the same string plus a space character', () => {
+        const prefix   = 'Anything';
+        const res      = getPrefix(prefix);
+        const expected = `${prefix} `;
+
+        expect(res).to.equal(expected);
+      });
+    });
+
+    context('When NO prefix is passed', () => {
+      it('should return an empty string', () => {
+        const prefix = String();
+        const res = getPrefix(prefix);
+        const expected = '';
+
+        expect(res).to.equal(expected);
+      });
+    });
+  });
+
   describe('#TRACE', () => {
     context('When LOG_LEVEL=trace', () => {
       let noopLib;
