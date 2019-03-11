@@ -6,7 +6,7 @@
   "scripts": {
     "cover": "LOG_LEVEL=trace nyc -x spec --reporter=lcov --reporter=text mocha spec --recursive",
     "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
-    "check-lint": "eslint *.js lib/*.js test/*.js",
+    "check-lint": "eslint *.js lib/*.js spec/*.js spec/lib/*.js",
     "fix-lint": "eslint --fix *.js lib/*.js test/*.js",
     "test": "LOG_LEVEL=trace mocha spec --recursive $@",
     "test-watch": "LOG_LEVEL=trace mocha spec --recursive -w"
