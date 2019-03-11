@@ -3,17 +3,20 @@
 /* eslint-env mocha */
 /* eslint-disable no-unused-expressions */
 
-const
-  sinon        = require('sinon'),
-  {sandbox}    = require('sinon'),
-  {expect}     = require('chai'),
-  cleanrequire = require('@everymundo/cleanrequire');
+const sinon        = require('sinon');
+const {expect}     = require('chai');
+const cleanrequire = require('@everymundo/cleanrequire');
 
 describe('index.js', () => {
-  const konsole = cleanrequire('../lib/konsole');
+  const konsole = {log() { }, error() { }, warn() { }};
+  const konsoLib = cleanrequire('../lib/konsole');
 
   let box;
-  beforeEach(() => { box = sandbox.create(); });
+  beforeEach(() => {
+    box = sinon.createSandbox();
+    box.stub(konsoLib, 'konsole').value(konsole);
+  });
+
   afterEach(() => { box.restore(); });
   after(() => {
     // Forces cleanup of possible forgotten stubbed libs in memory.
@@ -27,6 +30,16 @@ describe('index.js', () => {
     it('should deep equal { trace: 1, debug: 2, info: 3, warn: 4, error: 5, fatal: 6 }', () => {
       const { levels } = getCleanIndex();
       expect(levels).to.deep.equal({ trace: 1, debug: 2, info: 3, warn: 4, error: 5, fatal: 6 });
+    });
+  });
+
+  describe('.prefix', () => {
+    it('should correctly set the prefix', () => {
+      const logr = getCleanIndex();
+
+      logr.prefix = 'myPrefix';
+
+      expect(logr).to.have.property('prefix', 'myPrefix ');
     });
   });
 
@@ -60,6 +73,22 @@ describe('index.js', () => {
         const res = jsonDate();
 
         expect(res).to.match(jsonDateRegExp);
+      });
+    });
+
+
+    context('When process.env.LOG_NODATE is present', () => {
+      beforeEach(() => {
+        if (!('LOG_NODATE' in process.env)) process.env.LOG_NODATE = undefined;
+
+        box.stub(process.env, 'LOG_NODATE').value(1);
+      });
+
+      it('should return the date and the formated pid', () => {
+        const { jsonDate } = getCleanIndex();
+        const res = jsonDate();
+
+        expect(res).to.be.undefined;
       });
     });
   });
@@ -148,7 +177,8 @@ describe('index.js', () => {
       let noopLib;
       beforeEach(() => {
         noopLib = cleanrequire('../lib/noop');
-        box.stub(noopLib, 'noop').callsFake(() => {
+        box.stub(noopLib, 'noop').callsFake((...args) => {
+          console.error({args});
           throw new Error('noop should not be called');
         });
 
@@ -168,7 +198,8 @@ describe('index.js', () => {
         });
 
         // clean require removes previous requires from cache and required it again
-        const logr = cleanrequire('../index.js');
+        const logr = cleanrequire('../index.js').createLogger(undefined, 'trace', true);
+        // console.log(logr);
         logr.trace('test trace', 1, 2, 3);
       });
     });

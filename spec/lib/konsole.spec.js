@@ -4,21 +4,14 @@
 /* eslint-disable no-unused-expressions, no-console */
 
 const { expect } = require('chai');
+const cleanrequire = require('@everymundo/cleanrequire');
 
 describe('lib/konsole', () => {
-  describe('#noop', () => {
-    const konsole = require('../lib/konsole');
-    const keys    = Object.keys(konsole);
+  describe('konsole', () => {
+    const { konsole } = cleanrequire('../../lib/konsole');
 
-    it('should export 3 keys', () => {
-      expect(keys.length).to.equal(3);
-    });
-
-    it('should export keys error, log and warn', () => {
-      const sortedKeys = keys.sort();
-      const expectKeys = ['error', 'log', 'warn'];
-
-      expect(sortedKeys).to.deep.equal(expectKeys);
+    it('should be console', () => {
+      expect(konsole).to.equal(console);
     });
 
     describe('#error', () => {

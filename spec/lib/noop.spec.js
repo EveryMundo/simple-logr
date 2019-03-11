@@ -4,22 +4,21 @@
 /* eslint-disable no-unused-expressions */
 
 const { expect } = require('chai');
+const cleanrequire = require('@everymundo/cleanrequire');
 
 describe('lib/noop', () => {
   describe('#noop', () => {
-    const { noop } = require('../lib/noop');
-
     it('should be a function', () => {
+      const { noop } = require('../../lib/noop');
       expect(noop).to.be.instanceof(Function);
     });
 
     it('should return undefined', () => {
-      expect(noop()).to.be.undefined;
-    });
+      const { noop } = cleanrequire('../../lib/noop');
+      console.log(noop.toString());
+      const res = noop();
 
-    it('should be a blank function', () => {
-      const noopString = noop.toString().replace(/\s+/g, '');
-      expect(noopString).to.equal('()=>{}');
+      expect(res).to.be.undefined;
     });
   });
 });

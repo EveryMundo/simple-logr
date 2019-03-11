@@ -4,12 +4,12 @@
   "description": "A very simplistic logger that allows one to avoid using the console.log directly allowing stubbing and better linting.",
   "main": "index.js",
   "scripts": {
-    "cover": "LOG_LEVEL=trace istanbul cover -x '*.test.js' _mocha",
-    "check-coverage": "istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
+    "cover": "LOG_LEVEL=trace nyc -x spec --reporter=lcov --reporter=text mocha spec --recursive",
+    "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
     "check-lint": "eslint *.js lib/*.js test/*.js",
     "fix-lint": "eslint --fix *.js lib/*.js test/*.js",
-    "test": "LOG_LEVEL=trace mocha $@",
-    "test-watch": "LOG_LEVEL=trace mocha -w"
+    "test": "LOG_LEVEL=trace mocha spec --recursive $@",
+    "test-watch": "LOG_LEVEL=trace mocha spec --recursive -w"
   },
   "config": {
     "ghooks": {
@@ -31,14 +31,14 @@
   },
   "homepage": "https://github.com/EveryMundo/simple-logr#readme",
   "devDependencies": {
-    "@everymundo/cleanrequire": "^1.0.0",
-    "chai": "^4.1.2",
-    "eslint": "^4.16.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "ghooks": "^2.0.2",
-    "istanbul": "^0.4.5",
-    "mocha": "^5.0.0",
-    "sinon": "^4.2.2"
+    "@everymundo/cleanrequire": "^1.2.0",
+    "chai": "^4.2.0",
+    "eslint": "^5.15.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "ghooks": "^2.0.4",
+    "mocha": "^6.0.2",
+    "nyc": "^13.3.0",
+    "sinon": "^7.2.7"
   }
 }
