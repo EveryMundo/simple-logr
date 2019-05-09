@@ -23,7 +23,7 @@ const pid = ('       ' + proxess.pid).substr(-6);
 
 // eslint-disable-next-line no-nested-ternary
 const jsonDate = proxess.env.LOG_NODATE
-  ? () => {}
+  ? () => ''
   : (
     proxess.env.LOG_PID
       ? () => new Date().toJSON() + pid

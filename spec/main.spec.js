@@ -88,7 +88,7 @@ describe('index.js', () => {
         const { jsonDate } = getCleanIndex();
         const res = jsonDate();
 
-        expect(res).to.be.undefined;
+        expect(res).to.equal('');
       });
     });
   });
