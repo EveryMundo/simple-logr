@@ -6,8 +6,8 @@
   "scripts": {
     "cover": "LOG_LEVEL=trace nyc -x spec --reporter=lcov --reporter=text mocha spec --recursive",
     "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
-    "check-lint": "eslint *.js lib/*.js spec/*.js spec/lib/*.js",
-    "fix-lint": "eslint --fix *.js lib/*.js test/*.js",
+    "check-lint": "standard *.js lib/*.js spec/*.js spec/lib/*.js",
+    "fix-lint": "standard --fix *.js lib/*.js test/*.js",
     "test": "LOG_LEVEL=trace mocha spec --recursive $@",
     "test-watch": "LOG_LEVEL=trace mocha spec --recursive -w"
   },
@@ -31,14 +31,15 @@
   },
   "homepage": "https://github.com/EveryMundo/simple-logr#readme",
   "devDependencies": {
-    "@everymundo/cleanrequire": "^1.2.0",
+    "@everymundo/cleanrequire": "^1.2.1",
     "chai": "^4.2.0",
-    "eslint": "^5.15.1",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.16.0",
     "ghooks": "^2.0.4",
-    "mocha": "^6.0.2",
-    "nyc": "^13.3.0",
-    "sinon": "^7.2.7"
+    "mocha": "^6.2.0",
+    "nyc": "^14.1.1",
+    "sinon": "^7.4.1",
+    "standard": "^14.0.0"
+  },
+  "dependencies": {
+    "pino": "^5.13.2"
   }
 }
