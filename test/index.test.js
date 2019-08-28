@@ -5,9 +5,10 @@
 
 const sinon = require('sinon')
 const { expect } = require('chai')
+const cleanrequire = require('@everymundo/cleanrequire')
 
 describe('index.js', () => {
-  process.env.LOG_LEVEL = 'silent'
+  // process.env.LOG_LEVEL = 'silent'
 
   let box
   beforeEach(() => {
@@ -26,6 +27,17 @@ describe('index.js', () => {
     it('should create the method createLogger', () => {
       const logr = require('../index.js').createLogger({ level: 'debug' })
       expect(logr).to.have.property('level', 'debug')
+    })
+
+    context('when env.LOG_LEVEL is not defined', () => {
+      beforeEach(() => {
+        box.stub(process.env, 'LOG_LEVEL').value('')
+      })
+
+      it('should assume info as its default LOG_LEVEL', () => {
+        const logr = cleanrequire('../index.js').createLogger({ level: 'debug' })
+        expect(logr).to.have.property('level', 'debug')
+      })
     })
   })
 })
