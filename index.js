@@ -3,7 +3,7 @@
 const pino = require('pino')
 
 const defaultOptions = {
-  level: process.env.LOG_LEVEL,
+  level: process.env.LOG_LEVEL || 'info',
   timestamp: !process.env.LOG_NODATE,
   useLevelLabels: true,
   base: null
