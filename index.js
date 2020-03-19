@@ -16,14 +16,26 @@ const defaultOptions = {
 
     return pino.stdTimeFunctions.epochTime
   },
+  makeItShort: !!process.env.LOG_SHORT,
   useLevelLabels: true,
   base: null
 }
-
+console.log({defaultOptions})
 // Default is this
 // ',"pid":2365,"hostname":"daniel-XPS-15-7590"'
 function setRequestId (RequestId) {
-  this[pino.symbols.chindingsSym] = flatstr(`,"RequestId":${JSON.stringify(RequestId)}`)
+  if (this.madeShort) {
+    this[pino.symbols.chindingsSym] = flatstr(`,"Id":${JSON.stringify(RequestId).substr(-12)}`)
+  } else {
+    this[pino.symbols.chindingsSym] = flatstr(`,"RequestId":${JSON.stringify(RequestId)}`)
+  }
+}
+
+function makeItShort () {
+  this.madeShort = true
+  Object.keys(this[pino.symbols.lsCacheSym]).forEach((k) => {
+    this[pino.symbols.lsCacheSym][k] = (`{"l":"${JSON.parse(`${this[pino.symbols.lsCacheSym][k]}}`).level[0]}"`)
+  })
 }
 
 const createLogger = (options = {}) => {
@@ -32,6 +44,12 @@ const createLogger = (options = {}) => {
 
   mainLogr.createLogger = createLogger
   mainLogr.setRequestId = setRequestId
+  mainLogr.makeItShort = makeItShort
+  mainLogr.madeShort = false
+
+  if (pinoOptions.makeItShort) {
+    mainLogr.makeItShort()
+  }
 
   mainLogr[pino.symbols.endSym] = '}\n'
 
