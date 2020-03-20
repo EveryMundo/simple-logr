@@ -20,7 +20,7 @@ const defaultOptions = {
   useLevelLabels: true,
   base: null
 }
-console.log({defaultOptions})
+
 // Default is this
 // ',"pid":2365,"hostname":"daniel-XPS-15-7590"'
 function setRequestId (RequestId, substrStart = -12, substrEnd) {
