@@ -48,7 +48,11 @@ function makeItShort () {
   this.madeShort = true
 
   for (const k of Object.keys(this[pino.symbols.lsCacheSym])) {
-    this[pino.symbols.lsCacheSym][k] = flatstr(`{"l":"${JSON.parse(`${this[pino.symbols.lsCacheSym][k]}}`).level[0]}"`)
+    if (process.env.LOG_NUMERIC_LEVEL === 'true') {
+      this[pino.symbols.lsCacheSym][k] = flatstr(`{"l":${k}`)
+    } else {
+      this[pino.symbols.lsCacheSym][k] = flatstr(`{"l":"${JSON.parse(`${this[pino.symbols.lsCacheSym][k]}}`).level[0]}"`)
+    }
   }
 }
 
@@ -72,6 +76,7 @@ export const createLogger = (options = {}) => {
   }
 
   mainLogr[pino.symbols.endSym] = '}\n'
+  Object.defineProperty(mainLogr, 'default', { value: mainLogr })
 
   return mainLogr
 }

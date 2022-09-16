@@ -4,6 +4,9 @@
   "description": "",
   "main": "simple-usage.js",
   "scripts": {
+    "log:short": "LOG_SHORT=1 LOG_LEVEL=trace node simple-usage",
+    "log:nodate": "LOG_NODATE=1 LOG_LEVEL=trace node simple-usage",
+    "log:short:nodate": "LOG_NODATE=1 LOG_SHORT=1 LOG_LEVEL=trace node simple-usage",
     "trace": "LOG_LEVEL=trace node simple-usage",
     "debug": "LOG_LEVEL=debug node simple-usage",
     "info": "LOG_LEVEL=info node simple-usage",
@@ -12,9 +15,9 @@
     "fatal": "LOG_LEVEL=fatal node simple-usage",
     "test": "node simple-usage"
   },
-  "author": "Daniel Santana",
+  "author": "Daniel Santana <git@danielsantana.net>",
   "dependencies": {
-    "@everymundo/simple-logr": "~1.0.0"
+    "@everymundo/simple-logr": "*"
   },
   "license": "MIT"
 }
