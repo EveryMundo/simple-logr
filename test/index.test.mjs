@@ -3,11 +3,12 @@
 /* eslint-env mocha */
 /* eslint-disable no-unused-expressions */
 
-const sinon = require('sinon')
-const { expect } = require('chai')
-const cleanrequire = require('@everymundo/cleanrequire')
+import sinon from 'sinon'
+import chai from 'chai'
+import logr from '../index.mjs'
 
-describe('index.js', () => {
+const { expect } = chai
+describe('index.mjs', () => {
   // process.env.LOG_LEVEL = 'silent'
 
   let box
@@ -19,14 +20,13 @@ describe('index.js', () => {
 
   describe('#createLogger', () => {
     it('should have the method createLogger', () => {
-      const logr = require('../index.js')
       expect(logr).to.have.property('createLogger')
       expect(logr.createLogger).to.be.instanceof(Function)
     })
 
     it('should create the method createLogger', () => {
-      const logr = require('../index.js').createLogger({ level: 'debug' })
-      expect(logr).to.have.property('level', 'debug')
+      // const logr = require('../index.js').createLogger({ level: 'debug' })
+      expect(logr.createLogger({ level: 'debug' })).to.have.property('level', 'debug')
     })
 
     context('when env.LOG_LEVEL is not defined', () => {
@@ -35,8 +35,8 @@ describe('index.js', () => {
       })
 
       it('should assume info as its default LOG_LEVEL', () => {
-        const logr = cleanrequire('../index.js').createLogger({ level: 'debug' })
-        expect(logr).to.have.property('level', 'debug')
+        const myLogr = logr.createLogger({ level: 'debug' })
+        expect(myLogr).to.have.property('level', 'debug')
       })
     })
   })
