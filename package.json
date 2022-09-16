@@ -4,11 +4,12 @@
   "description": "A very simplistic logger that allows one to avoid using the console.log directly allowing stubbing and better linting.",
   "main": "index.js",
   "module": "index.mjs",
+  "type": "module",
   "scripts": {
     "cover": "LOG_LEVEL=silent nyc -x test --reporter=lcov --reporter=text mocha test --recursive",
     "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
-    "check-lint": "standard *js lib/*js test/*js",
-    "fix-lint": "standard --fix *js lib/*js test/*js",
+    "check-lint": "standard *js  *mjs  *cjs test/*js",
+    "fix-lint": "standard --fix *js  *mjs  *cjs test/*js",
     "test": "LOG_LEVEL=silent mocha --recursive $@",
     "test-watch": "LOG_LEVEL=silent mocha --recursive -w"
   },
@@ -38,7 +39,6 @@
     "chai": "^4.3.6",
     "coverage-node": "^8.0.0",
     "esm": "^3.2.25",
-    "ghooks": "^2.0.4",
     "mocha": "^10.0.0",
     "nyc": "^15.1.0",
     "sinon": "^14.0.0",
