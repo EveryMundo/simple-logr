@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/EveryMundo/simple-logr#readme",
   "devDependencies": {
-    "@everymundo/cleanrequire": "^1.2.1",
+    "@everymundo/cleanrequire": "^1.2.4",
     "@std/esm": "^0.26.0",
     "c8": "^7.13.0",
     "chai": "^4.3.7",
@@ -40,11 +40,11 @@
     "esm": "^3.2.25",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
-    "sinon": "^15.0.2",
+    "sinon": "^15.0.4",
     "standard": "^17.0.0"
   },
   "dependencies": {
     "flatstr": "^1.0.12",
-    "pino": "^8.11.0"
+    "pino": "^8"
   }
 }
