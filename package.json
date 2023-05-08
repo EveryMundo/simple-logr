@@ -1,13 +1,13 @@
 {
   "name": "@everymundo/simple-logr",
-  "version": "2.2.4",
+  "version": "2.3.0",
   "description": "A very simplistic logger that allows one to avoid using the console.log directly allowing stubbing and better linting.",
   "main": "index.js",
   "scripts": {
     "cover": "LOG_LEVEL=trace nyc -x test --reporter=lcov --reporter=text mocha test --recursive",
     "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
-    "check-lint": "standard *.js lib/*.js test/*.js",
-    "fix-lint": "standard --fix *.js lib/*.js test/*.js",
+    "check-lint": "standard *js test/**js",
+    "fix-lint": "standard --fix **js test/**js",
     "test": "LOG_LEVEL=trace mocha --recursive $@",
     "test-watch": "LOG_LEVEL=trace mocha --recursive -w"
   },
