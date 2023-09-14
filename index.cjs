@@ -47,10 +47,13 @@ function setRequestId (RequestId, substrStart = -12, substrEnd) {
 
 function makeItShort () {
   this.madeShort = true
+  Object.keys(this[pino.symbols.lsCacheSym]).forEach((k) => {
+    const { level } = JSON.parse(`${this[pino.symbols.lsCacheSym][k]}}`)
 
-  for (const k of Object.keys(this[pino.symbols.lsCacheSym])) {
-    this[pino.symbols.lsCacheSym][k] = flatstr(`{"l":"${JSON.parse(`${this[pino.symbols.lsCacheSym][k]}}`).level[0]}"`)
-  }
+    this[pino.symbols.lsCacheSym][k] = (typeof level === 'number')
+      ? flatstr(`{"l":"${this.levels.labels[level][0]}"`)
+      : flatstr(`{"l":"${level[0]}"`)
+  })
 }
 
 const createLogger = (options = {}) => {
