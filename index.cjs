@@ -52,7 +52,11 @@ function makeItShort () {
     if (process.env.LOG_NUMERIC_LEVEL === 'true') {
       this[pino.symbols.lsCacheSym][k] = flatstr(`{"l":${k}`)
     } else {
-      this[pino.symbols.lsCacheSym][k] = flatstr(`{"l":"${JSON.parse(`${this[pino.symbols.lsCacheSym][k]}}`).level[0]}"`)
+      const { level } = JSON.parse(`${this[pino.symbols.lsCacheSym][k]}}`)
+
+      this[pino.symbols.lsCacheSym][k] = (typeof level === 'number')
+        ? flatstr(`{"l":"${this.levels.labels[level][0]}"`)
+        : flatstr(`{"l":"${level[0]}"`)
     }
   }
 }
