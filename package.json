@@ -32,14 +32,14 @@
   "homepage": "https://github.com/EveryMundo/simple-logr#readme",
   "devDependencies": {
     "@everymundo/cleanrequire": "^1.2.1",
-    "chai": "^4.2.0",
+    "chai": "^4.3.8",
     "ghooks": "^2.0.4",
     "mocha": "^10.2.0",
     "nyc": "^15.0.0",
-    "sinon": "^15.0.4",
-    "standard": "^17.0.0"
+    "sinon": "^16.0.0",
+    "standard": "^17.1.0"
   },
   "dependencies": {
-    "pino": "^8.14.1"
+    "pino": "^8.15.1"
   }
 }
