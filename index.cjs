@@ -7,7 +7,6 @@ const createDefaultOptions = (env) => ({
   createdAt: Date.now(),
   level: env.LOG_LEVEL || 'info',
   get timestamp () {
-    console.log('timestamp')
     if (env.LOG_NODATE !== 'false') {
       Object.defineProperty(this, 'timestamp', { value: false })
 
