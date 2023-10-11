@@ -59,7 +59,9 @@ typings/
 
 package-lock.json
 temp/**
+tmp/**
 test/**
 
 .*/*
 .nvmrc
+bun.lockb
