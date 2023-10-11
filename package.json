@@ -1,6 +1,6 @@
 {
   "name": "@everymundo/simple-logr",
-  "version": "3.1.2",
+  "version": "3.2.0",
   "description": "A very simplistic logger that allows one to avoid using the console.log directly allowing stubbing and better linting.",
   "main": "index.js",
   "module": "index.mjs",
