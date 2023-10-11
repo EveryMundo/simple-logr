@@ -31,7 +31,7 @@ describe('index.cjs', () => {
       expect(myLogr).to.have.property('level', 'debug')
     })
 
-    context('when env.LOG_LEVEL is not defined', () => {
+    describe('when env.LOG_LEVEL is not defined', () => {
       beforeEach(() => {
         box.stub(process.env, 'LOG_LEVEL').value('')
       })
@@ -44,7 +44,7 @@ describe('index.cjs', () => {
   })
 
   describe('#setRequestId', () => {
-    context('when makeItShort is true (default)', () => {
+    describe('when makeItShort is true (default)', () => {
       it('should only use the last 12 characters of the input', () => {
         const myLogr = logr.createLogger()
         myLogr.setRequestId('01234567890123456789')
@@ -53,7 +53,7 @@ describe('index.cjs', () => {
       })
     })
 
-    context('when makeItShort is false (default)', () => {
+    describe('when makeItShort is false (default)', () => {
       it('should only use the last 12 characters of the input', () => {
         const myLogr = logr.createLogger({ makeItShort: false })
         myLogr.setRequestId('01234567890123456789')
@@ -63,8 +63,29 @@ describe('index.cjs', () => {
     })
   })
 
+  describe('#makeItShort', () => {
+    beforeEach(() => {
+      if (process.env.LOG_NUMERIC_LEVEL == null) {
+        process.env.LOG_NUMERIC_LEVEL = ''
+      }
+
+      box.stub(process.env, 'LOG_NUMERIC_LEVEL').value('true')
+    })
+
+    describe('when env.LOG_NUMERIC_LEVEL == true', () => {
+      it('should print l as a number', () => {
+        const myLogr = logr.createLogger()
+        myLogr.makeItShort()
+        for (const k of Object.keys(myLogr[pino.symbols.lsCacheSym])) {
+          const o = JSON.parse(myLogr[pino.symbols.lsCacheSym][k] + '}')
+          expect(o).to.have.property('l', parseInt(k))
+        }
+      })
+    })
+  })
+
   describe('#createDefaultOptions', () => {
-    context('when env.LOG_NODATE !== "false"', () => {
+    describe('when env.LOG_NODATE !== "false"', () => {
       it('should set timestamp to false', () => {
         const defaultOptions = logr.createDefaultOptions({ LOG_NODATE: null })
 
@@ -72,15 +93,15 @@ describe('index.cjs', () => {
       })
     })
 
-    context('when env.LOG_NODATE === "false"', () => {
-      context('and LOG_DATE_FORMAT === "unixTime"', () => {
+    describe('when env.LOG_NODATE === "false"', () => {
+      describe('and LOG_DATE_FORMAT === "unixTime"', () => {
         it('should set timestamp to false', () => {
           const defaultOptions = logr.createDefaultOptions({ LOG_NODATE: 'false', LOG_DATE_FORMAT: 'unixTime' })
 
           expect(defaultOptions).to.have.property('timestamp', pino.stdTimeFunctions.unixTime)
         })
       })
-      context('but no LOG_DATE_FORMAT', () => {
+      describe('but no LOG_DATE_FORMAT', () => {
         it('should set timestamp to false', () => {
           const defaultOptions = logr.createDefaultOptions({ LOG_NODATE: 'false' })
 

@@ -2,8 +2,8 @@
 
 const pino = require('pino')
 const flatstr = require('flatstr')
-
-const createDefaultOptions = (env) => ({
+/**/
+const createDefaultOptions = (env, options = {}) => ({
   createdAt: Date.now(),
   level: env.LOG_LEVEL || 'info',
   get timestamp () {
@@ -23,66 +23,60 @@ const createDefaultOptions = (env) => ({
 
     return pino.stdTimeFunctions.epochTime
   },
-  get makeItShort () {
-    return env.LOG_SHORT !== 'false'
-  },
+  makeItShort: env.LOG_SHORT !== 'false',
   formatters: {
     level: label => ({ level: label })
   },
-  base: null
+  base: null,
+  ...options
 })
 
-const defaultOptions = createDefaultOptions(process.env)
+const createLogger = (options) => {
+  const pinoOptions = createDefaultOptions(process.env, options)
 
-// Default is this
-// ',"pid":2365,"hostname":"daniel-XPS-15-7590"'
-function setRequestId (RequestId, substrStart = -12, substrEnd) {
-  this.requestId = this.madeShort
-    ? ('' + RequestId).substr(substrStart, substrEnd)
-    : RequestId
+  const logr = Object.create(pino(pinoOptions), {
+    createLogger: { value: createLogger },
+    setRequestId: {
+      value: function (RequestId, substrStart = -12, substrEnd) {
+        this.requestId = this.madeShort
+          ? ('' + RequestId).slice(substrStart, substrEnd)
+          : RequestId
 
-  this[pino.symbols.chindingsSym] = flatstr(`,"Id":"${this.requestId}"`)
-}
+        this[pino.symbols.chindingsSym] = flatstr(`,"Id":"${this.requestId}"`)
+      }
+    },
+    requestId: { value: null, writable: true },
+    makeItShort: {
+      value: function () {
+        this.madeShort = true
 
-function makeItShort () {
-  this.madeShort = true
+        for (const k of Object.keys(this[pino.symbols.lsCacheSym])) {
+          if (process.env.LOG_NUMERIC_LEVEL === 'true') {
+            this[pino.symbols.lsCacheSym][k] = flatstr(`{"l":${k}`)
+          } else {
+            const { level } = JSON.parse(`${this[pino.symbols.lsCacheSym][k]}}`)
 
-  for (const k of Object.keys(this[pino.symbols.lsCacheSym])) {
-    if (process.env.LOG_NUMERIC_LEVEL === 'true') {
-      this[pino.symbols.lsCacheSym][k] = flatstr(`{"l":${k}`)
-    } else {
-      const { level } = JSON.parse(`${this[pino.symbols.lsCacheSym][k]}}`)
-
-      this[pino.symbols.lsCacheSym][k] = (typeof level === 'number')
-        ? flatstr(`{"l":"${this.levels.labels[level][0]}"`)
-        : flatstr(`{"l":"${level[0]}"`)
-    }
-  }
-}
-
-const createLogger = (options = {}) => {
-  const pinoOptions = { ...defaultOptions, ...options }
-  const mainLogr = Object.create(
-    pino(pinoOptions),
-    {
-      createLogger: { value: createLogger },
-      setRequestId: { value: setRequestId },
-      requestId: { value: null, writable: true },
-      makeItShort: { value: makeItShort },
-      //   madeShort: { value: false, writable: true },
-      createdAt: { value: pinoOptions.createdAt, writable: true },
-      createDefaultOptions: { value: createDefaultOptions }
-    }
-  )
+            this[pino.symbols.lsCacheSym][k] = (typeof level === 'number')
+              ? flatstr(`{"l":"${this.levels.labels[level][0]}"`)
+              : flatstr(`{"l":"${level[0]}"`)
+          }
+        }
+      }
+    },
+    madeShort: { value: false, writable: true },
+    createdAt: { value: Date.now() },
+    createDefaultOptions: { value: createDefaultOptions }
+  })
 
   if (pinoOptions.makeItShort) {
-    mainLogr.makeItShort()
+    logr.makeItShort()
   }
 
-  mainLogr[pino.symbols.endSym] = '}\n'
-  Object.defineProperty(mainLogr, 'default', { value: mainLogr })
+  logr[pino.symbols.endSym] = '}\n'
+  Object.defineProperty(logr, 'default', { value: logr })
 
-  return mainLogr
+  return logr
 }
 
+// module.exports = SimpleLogr.createLogger()
 module.exports = createLogger()
